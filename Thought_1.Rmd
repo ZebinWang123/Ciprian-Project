@@ -1,0 +1,61 @@
+---
+title: "Proj_NHANES"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## NHANES Project
+
+```{r}
+devtools::install_github("andrew-leroux/rnhanesdata", build = TRUE, 
+                         build_opts = c("--no-resave-data", "--no-manual"), force = TRUE)
+
+library(rnhanesdata)
+```
+
+
+```{r, process_accel_flags, eval=FALSE}
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/Covariate_C.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/Covariate_D.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/Flags_C.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/Flags_D.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/Mortality_2011_C.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/Mortality_2011_D.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/Mortality_2015_C.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/Mortality_2015_D.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/PAXINTEN_C.rda")
+load("C:/Users/Zebin Wang/Desktop/HW1/Ciprian-Project/PAXINTEN_D.rda")
+```
+Mainly look at them:
+
+```{r}
+head(PAXINTEN_C)
+head(Flags_C)
+```
+
+C,D: Basically different research projects (Different group of people)
+
+Flags: Whether the band is used (data collected at the time)
+
+Covariate: BMI, Race, Gender, Diabetes, etc. (We need to match on these parameters)
+
+Mortality: Mortality is collected in two times: The research is done 2003-2004 (C) and 2005-2006 (D).
+
+```{r}
+head(Mortality_2011_C)
+```
+
+`Mortstat` is the "whether dead or not" judgment.
+
+```{r}
+head(Covariate_C)
+```
+
+Basically the model can be a glm Binomial model; I wonder if it is necessary to work on machine learning.
+
+Can we smooth on (Flag * movement), and fit a glm binomial with that smooth function, then put other possible confounders in the structure?
+
+I believe it is doable and I would suggest using a binomial regession (easier to interpret).
